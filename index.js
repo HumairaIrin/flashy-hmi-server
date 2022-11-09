@@ -21,6 +21,13 @@ async function run() {
             const services = await cursor.toArray();
             res.send(services)
         })
+        app.get('/limited', async (req, res) => {
+            const number = parseInt(req.query.number);
+            const query = {};
+            const cursor = serviceCollection.find(query);
+            const limitService = await cursor.limit(number).toArray();
+            res.send(limitService);
+        })
     }
     finally {
 
