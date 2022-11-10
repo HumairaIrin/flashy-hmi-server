@@ -14,6 +14,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         const serviceCollection = client.db('flashyHMI').collection('services');
+        const reviewsCollection = client.db('flashyHMI').collection('reviews');
 
         app.get('/services', async (req, res) => {
             const query = {};
@@ -36,6 +37,15 @@ async function run() {
             const limitService = await cursor.limit(number).toArray();
             res.send(limitService);
         })
+
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { serviceId: id }
+            const cursor = reviewsCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews)
+        })
+
     }
     finally {
 
